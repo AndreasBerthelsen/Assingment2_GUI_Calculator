@@ -24,13 +24,14 @@ class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Center(child: Text("RPN Calculator")), actions: [
+      appBar: AppBar(title: Text("RPN Calculator"),actions: [
         IconButton(
             onPressed: () => showDialog<String>(
                   context: context,
                   builder: (BuildContext context) => AlertDialog(
                     title: const Text('How to use the RPN Calculator?'),
-                    content: const Text('To use the calculator, first enter a number, then press "Enter".             Then a second number, "Enter" again.       And last the number operator you would like to use'),
+                    content: const Text(
+                        'To use the calculator, first enter a number, then press "Enter".             Then a second number, "Enter" again.       And last the number operator you would like to use'),
                     actions: <Widget>[
                       TextButton(
                         onPressed: () => Navigator.pop(context, 'OK'),
