@@ -13,18 +13,25 @@ class Calculator extends StatelessWidget {
   }
 }
 
-class MainScreen extends StatelessWidget {
+class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
 
+  @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
   final double btnPadding = 10.0;
   final double numPadding = 20.0;
   final Color backgroundColor = Colors.black;
   final Color textColor = Colors.red;
+  String enteredNumber = '';
+  String stackedNumber = '';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("RPN Calculator"),actions: [
+      appBar: AppBar(title: Text("RPN Calculator"), actions: [
         IconButton(
             onPressed: () => showDialog<String>(
                   context: context,
@@ -47,7 +54,7 @@ class MainScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Text(
-              "Last number:",
+              "Last numbers:",
               style: TextStyle(fontSize: 20),
             ),
             stackDisplay(),
@@ -67,30 +74,42 @@ class MainScreen extends StatelessWidget {
     );
   }
 
-  Container numberDisplay() {
-    return Container(
-        padding: EdgeInsets.only(bottom: numPadding, top: numPadding),
-        decoration: BoxDecoration(
-            color: backgroundColor, border: Border.all(color: Colors.black)),
-        child: Center(
-          child: Text(
-            "test2",
-            style: TextStyle(fontSize: 75, color: textColor),
-          ),
-        ));
+  EnterNumber(String value) {
+    setState(() {
+      enteredNumber = enteredNumber + value;
+    });
   }
 
-  Container stackDisplay() {
-    return Container(
-        padding: EdgeInsets.only(bottom: numPadding, top: numPadding),
-        decoration: BoxDecoration(
-            color: backgroundColor, border: Border.all(color: Colors.black)),
-        child: Center(
-          child: Text(
-            "test1",
-            style: TextStyle(fontSize: 75, color: textColor),
-          ),
-        ));
+  SingleChildScrollView numberDisplay() {
+    return
+      SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Container(
+          alignment: Alignment.centerRight,
+          padding: EdgeInsets.only(bottom: numPadding, top: numPadding),
+          child: Center(
+            child: Text(
+              enteredNumber,
+              style: TextStyle(fontSize: 50, color: textColor),
+            ),
+          )),
+      );
+  }
+
+  SingleChildScrollView stackDisplay() {
+    return
+      SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Container(
+            alignment: Alignment.centerRight,
+            padding: EdgeInsets.only(bottom: numPadding, top: numPadding),
+            child: Center(
+              child: Text(
+                stackedNumber,
+                style: TextStyle(fontSize: 50, color: textColor),
+              ),
+            )),
+      );
   }
 
   Row clearBtn() {
@@ -135,8 +154,7 @@ class MainScreen extends StatelessWidget {
               height: 60,
               child: ElevatedButton(
                 onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.lightBlueAccent),
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
                 child: Text(
                   "Enter",
                   style: TextStyle(fontSize: 18, color: Colors.black),
@@ -154,7 +172,9 @@ class MainScreen extends StatelessWidget {
               width: 50,
               height: 60,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () =>
+                    EnterNumber("0")
+                ,
                 style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.lightBlueAccent),
                 child: Text(
@@ -222,7 +242,9 @@ class MainScreen extends StatelessWidget {
             width: 50,
             height: 60,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () =>
+                EnterNumber("1")
+              ,
               style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.lightBlueAccent),
               child: Text(
@@ -243,7 +265,9 @@ class MainScreen extends StatelessWidget {
             width: 50,
             height: 60,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () =>
+                  EnterNumber("2")
+              ,
               style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.lightBlueAccent),
               child: Text(
@@ -264,7 +288,9 @@ class MainScreen extends StatelessWidget {
             width: 50,
             height: 60,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () =>
+                  EnterNumber("3")
+              ,
               style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.lightBlueAccent),
               child: Text(
@@ -313,7 +339,9 @@ class MainScreen extends StatelessWidget {
             width: 50,
             height: 60,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () =>
+                  EnterNumber("4")
+              ,
               style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.lightBlueAccent),
               child: Text(
@@ -334,7 +362,9 @@ class MainScreen extends StatelessWidget {
             width: 50,
             height: 60,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () =>
+                  EnterNumber("5")
+              ,
               style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.lightBlueAccent),
               child: Text(
@@ -355,7 +385,9 @@ class MainScreen extends StatelessWidget {
             width: 50,
             height: 60,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () =>
+                  EnterNumber("6")
+              ,
               style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.lightBlueAccent),
               child: Text(
@@ -404,7 +436,9 @@ class MainScreen extends StatelessWidget {
             width: 50,
             height: 60,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () =>
+                  EnterNumber("7")
+              ,
               style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.lightBlueAccent),
               child: Text(
@@ -425,7 +459,9 @@ class MainScreen extends StatelessWidget {
             width: 50,
             height: 60,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () =>
+                  EnterNumber("8")
+              ,
               style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.lightBlueAccent),
               child: Text(
@@ -446,7 +482,9 @@ class MainScreen extends StatelessWidget {
             width: 50,
             height: 60,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () =>
+                  EnterNumber("9")
+              ,
               style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.lightBlueAccent),
               child: Text(
