@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'command.dart';
 
 void main() {
   runApp(const Calculator());
@@ -26,7 +27,7 @@ class _MainScreenState extends State<MainScreen> {
   final Color backgroundColor = Colors.black;
   final Color textColor = Colors.red;
   String enteredNumber = '';
-  String stackedNumber = '';
+  List<String> stackedNumbers = [];
 
   @override
   Widget build(BuildContext context) {
@@ -59,11 +60,11 @@ class _MainScreenState extends State<MainScreen> {
             ),
             stackDisplay(),
             Text(
-              "Entered number:",
+              "Entered value:",
               style: TextStyle(fontSize: 20),
             ),
             numberDisplay(),
-            clearBtn(),
+            clearBtns(),
             buildRow1(),
             buildRow2(),
             buildRow3(),
@@ -74,17 +75,64 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
+  ClearNumber() {
+    setState(() {
+      enteredNumber = '';
+    });
+  }
+
+  ClearAll() {
+    setState(() {
+      enteredNumber = '';
+      stackedNumbers.clear();
+    });
+  }
+
   EnterNumber(String value) {
     setState(() {
       enteredNumber = enteredNumber + value;
     });
   }
 
+  CheckInput(){
+    if(enteredNumber=='+'){
+    Addition().execute(stackedNumbers);
+    }else if(enteredNumber=='-'){
+      Subtraction().execute(stackedNumbers);
+    }else if(enteredNumber=='*'){
+      Multiply().execute(stackedNumbers);
+    }else if(enteredNumber=='/'){
+      Divide().execute(stackedNumbers);
+    }else{
+      AddNumber();
+    }
+    setState(() {
+
+    });
+    ClearNumber();
+  }
+
+  AddNumber() {
+    setState(() {
+      stackedNumbers.add(enteredNumber);
+      ClearNumber();
+    });
+  }
+
+  GetStack() {
+    String value = "";
+    if (stackedNumbers.isNotEmpty) {
+      value = stackedNumbers.toString();
+      return value;
+    } else {
+      return "";
+    }
+  }
+
   SingleChildScrollView numberDisplay() {
-    return
-      SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Container(
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Container(
           alignment: Alignment.centerRight,
           padding: EdgeInsets.only(bottom: numPadding, top: numPadding),
           child: Center(
@@ -93,26 +141,23 @@ class _MainScreenState extends State<MainScreen> {
               style: TextStyle(fontSize: 50, color: textColor),
             ),
           )),
-      );
+    );
   }
 
-  SingleChildScrollView stackDisplay() {
-    return
-      SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Container(
-            alignment: Alignment.centerRight,
-            padding: EdgeInsets.only(bottom: numPadding, top: numPadding),
-            child: Center(
-              child: Text(
-                stackedNumber,
-                style: TextStyle(fontSize: 50, color: textColor),
-              ),
-            )),
-      );
+  Container stackDisplay() {
+    return Container(
+          alignment: Alignment.centerRight,
+          padding: EdgeInsets.only(bottom: numPadding, top: numPadding),
+          child: Center(
+            child: Text(
+              GetStack(),
+              style: TextStyle(fontSize: 50, color: textColor),
+            ),
+          ),
+    );
   }
 
-  Row clearBtn() {
+  Row clearBtns() {
     return Row(
       children: [
         Expanded(
@@ -126,7 +171,7 @@ class _MainScreenState extends State<MainScreen> {
               width: 50,
               height: 60,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () => ClearNumber(),
                 style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.lightBlueAccent),
                 child: Text(
@@ -134,7 +179,27 @@ class _MainScreenState extends State<MainScreen> {
                   style: TextStyle(fontSize: 18, color: Colors.black),
                 ),
               )),
-        ))
+        )),
+        Expanded(
+            child: Container(
+              padding: EdgeInsets.only(
+                  left: btnPadding,
+                  right: btnPadding,
+                  bottom: btnPadding,
+                  top: btnPadding),
+              child: SizedBox(
+                  width: 50,
+                  height: 60,
+                  child: ElevatedButton(
+                    onPressed: () => ClearAll(),
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.lightBlueAccent),
+                    child: Text(
+                      "Clear All",
+                      style: TextStyle(fontSize: 18, color: Colors.black),
+                    ),
+                  )),
+            ))
       ],
     );
   }
@@ -153,7 +218,7 @@ class _MainScreenState extends State<MainScreen> {
               width: 50,
               height: 60,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () => CheckInput(),
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
                 child: Text(
                   "Enter",
@@ -172,9 +237,7 @@ class _MainScreenState extends State<MainScreen> {
               width: 50,
               height: 60,
               child: ElevatedButton(
-                onPressed: () =>
-                    EnterNumber("0")
-                ,
+                onPressed: () => EnterNumber("0"),
                 style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.lightBlueAccent),
                 child: Text(
@@ -194,7 +257,7 @@ class _MainScreenState extends State<MainScreen> {
               width: 50,
               height: 60,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () => EnterNumber(","),
                 style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.lightBlueAccent),
                 child: Text(
@@ -214,7 +277,10 @@ class _MainScreenState extends State<MainScreen> {
             width: 50,
             height: 60,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed:  () {
+            EnterNumber("+");
+            setState(() {});
+            },
               style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.lightBlueAccent),
               child: Text(
@@ -242,9 +308,7 @@ class _MainScreenState extends State<MainScreen> {
             width: 50,
             height: 60,
             child: ElevatedButton(
-              onPressed: () =>
-                EnterNumber("1")
-              ,
+              onPressed: () => EnterNumber("1"),
               style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.lightBlueAccent),
               child: Text(
@@ -265,9 +329,7 @@ class _MainScreenState extends State<MainScreen> {
             width: 50,
             height: 60,
             child: ElevatedButton(
-              onPressed: () =>
-                  EnterNumber("2")
-              ,
+              onPressed: () => EnterNumber("2"),
               style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.lightBlueAccent),
               child: Text(
@@ -288,9 +350,7 @@ class _MainScreenState extends State<MainScreen> {
             width: 50,
             height: 60,
             child: ElevatedButton(
-              onPressed: () =>
-                  EnterNumber("3")
-              ,
+              onPressed: () => EnterNumber("3"),
               style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.lightBlueAccent),
               child: Text(
@@ -311,7 +371,10 @@ class _MainScreenState extends State<MainScreen> {
             width: 50,
             height: 60,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                EnterNumber("-");
+                setState(() {});
+              },
               style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.lightBlueAccent),
               child: Text(
@@ -339,9 +402,7 @@ class _MainScreenState extends State<MainScreen> {
             width: 50,
             height: 60,
             child: ElevatedButton(
-              onPressed: () =>
-                  EnterNumber("4")
-              ,
+              onPressed: () => EnterNumber("4"),
               style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.lightBlueAccent),
               child: Text(
@@ -362,9 +423,7 @@ class _MainScreenState extends State<MainScreen> {
             width: 50,
             height: 60,
             child: ElevatedButton(
-              onPressed: () =>
-                  EnterNumber("5")
-              ,
+              onPressed: () => EnterNumber("5"),
               style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.lightBlueAccent),
               child: Text(
@@ -385,9 +444,7 @@ class _MainScreenState extends State<MainScreen> {
             width: 50,
             height: 60,
             child: ElevatedButton(
-              onPressed: () =>
-                  EnterNumber("6")
-              ,
+              onPressed: () => EnterNumber("6"),
               style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.lightBlueAccent),
               child: Text(
@@ -408,7 +465,10 @@ class _MainScreenState extends State<MainScreen> {
             width: 50,
             height: 60,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                EnterNumber("/");
+                setState(() {});
+              },
               style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.lightBlueAccent),
               child: Text(
@@ -436,9 +496,7 @@ class _MainScreenState extends State<MainScreen> {
             width: 50,
             height: 60,
             child: ElevatedButton(
-              onPressed: () =>
-                  EnterNumber("7")
-              ,
+              onPressed: () => EnterNumber("7"),
               style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.lightBlueAccent),
               child: Text(
@@ -459,9 +517,7 @@ class _MainScreenState extends State<MainScreen> {
             width: 50,
             height: 60,
             child: ElevatedButton(
-              onPressed: () =>
-                  EnterNumber("8")
-              ,
+              onPressed: () => EnterNumber("8"),
               style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.lightBlueAccent),
               child: Text(
@@ -482,9 +538,7 @@ class _MainScreenState extends State<MainScreen> {
             width: 50,
             height: 60,
             child: ElevatedButton(
-              onPressed: () =>
-                  EnterNumber("9")
-              ,
+              onPressed: () => EnterNumber("9"),
               style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.lightBlueAccent),
               child: Text(
@@ -505,7 +559,11 @@ class _MainScreenState extends State<MainScreen> {
             width: 50,
             height: 60,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                EnterNumber("*");
+                setState(() {});
+              }
+              ,
               style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.lightBlueAccent),
               child: Text(
