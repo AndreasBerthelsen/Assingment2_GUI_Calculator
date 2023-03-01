@@ -257,11 +257,11 @@ class _MainScreenState extends State<MainScreen> {
               width: 50,
               height: 60,
               child: ElevatedButton(
-                onPressed: () => EnterNumber(","),
+                onPressed: () => EnterNumber("."),
                 style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.lightBlueAccent),
                 child: Text(
-                  ",",
+                  ".",
                   style: TextStyle(fontSize: 18, color: Colors.black),
                 ),
               )),
