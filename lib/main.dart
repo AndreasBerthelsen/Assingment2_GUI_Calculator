@@ -39,7 +39,7 @@ class _MainScreenState extends State<MainScreen> {
                   builder: (BuildContext context) => AlertDialog(
                     title: const Text('How to use the RPN Calculator?'),
                     content: const Text(
-                        'To use the calculator, first enter a number, then press "Enter".             Then a second number, "Enter" again.       And last the number operator you would like to use'),
+                        'To use the calculator, first enter a number, then press "Enter".             Then a second number, "Enter" again.       And last the number operator you would like to use, then enter.'),
                     actions: <Widget>[
                       TextButton(
                         onPressed: () => Navigator.pop(context, 'OK'),
